@@ -122,19 +122,20 @@
     pav4.position.x = 5.8;
     pav4.position.z = 3;
 
+    /*
     BABYLON.SceneLoader.ImportMeshAsync("him", "/scenes/Dude/", "Dude.babylon", scene).then((result) => {
         var dude = result.meshes[0];
         dude.scaling = new BABYLON.Vector3(0.02, 0.02, 0.02);
         dude.position = new BABYLON.Vector3(-1, 1, 1);
     });
-
+    */
     /*BABYLON.SceneLoader.ImportMesh("", Assets.meshes.Yeti.rootUrl, Assets.meshes.Yeti.filename, scene, function(newMeshes){
     newMeshes[0].scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
     });
     */
 
     await scene.createDefaultXRExperienceAsync();
-    
+
     return scene;
 }
                 window.initFunction = async function() {
