@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <title>WebXR Demo using BABYLON</title>
+        <title>Babylon.js sample code</title>
 
         <!-- Babylon.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
@@ -54,7 +54,7 @@
         var scene = null;
         var sceneToRender = null;
         var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
-        var createScene = function () {
+        const createScene =  () => {
     // This creates a basic Babylon Scene object (non-mesh)
     var scene = new BABYLON.Scene(engine);
 
@@ -65,7 +65,7 @@
     //camera.setTarget(BABYLON.Vector3.Zero());
 
     var camera = new BABYLON.ArcRotateCamera("camera", BABYLON.Tools.ToRadians(90), BABYLON.Tools.ToRadians(65), 10, BABYLON.Vector3.Zero(), scene);
-
+    
     // This attaches the camera to the canvas
     camera.attachControl(canvas, true);
 
@@ -76,26 +76,68 @@
     light.intensity = 0.7;
 
     // Our built-in 'sphere' shape.
-    var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 1, segments: 32}, scene);
+    //var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 1, segments: 32}, scene);
 
     // Move the sphere upward 1/2 its height
-    sphere.position.y = 1;
+    //sphere.position.y = 1;
 
     // Our built-in 'ground' shape.
-    var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 2, height: 2}, scene);
+    var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 15, height: 15}, scene);
     var groundMaterial = new BABYLON.StandardMaterial("material", scene);
     ground.material = groundMaterial;
-    ground.material.diffuseColor = BABYLON.Color3.Red();
-    var groundTexture = new BABYLON.Texture(Assets.textures.checkerboard_basecolor_png.rootUrl, scene);
-    groundMaterial.diffuseTexture = groundTexture;
-    BABYLON.SceneLoader.ImportMesh("", Assets.meshes.Yeti.rootUrl, Assets.meshes.Yeti.filename, scene, function(newMeshes){
+    ground.material.diffuseColor = new BABYLON.Color3(1, 0.98, 0);
+    //var groundTexture = new BABYLON.Texture(Assets.textures.checkerboard_basecolor_png.rootUrl, scene);
+    //groundMaterial.diffuseTexture = groundTexture;
+
+    // Create the stall box
+    var product = BABYLON.MeshBuilder.CreateBox("stall");
+    product.position = new BABYLON.Vector3(-3,0.5,0);
+    product.scaling = new BABYLON.Vector3(1, 1.5, 1.5);
+    var productmaterial = new BABYLON.StandardMaterial("stall",scene);
+    product.material = productmaterial;
+    product.material.diffuseColor = new BABYLON.Color3(0.62, 0.39, 0.93);
+
+    // Create the stall roof
+    // Stall Roof texture
+    const roofMat = new BABYLON.StandardMaterial("roofMat");
+    roofMat.diffuseTexture = new BABYLON.Texture(Assets.textures.checkerboard_basecolor_png.rootUrl, scene);
+    const roof = BABYLON.MeshBuilder.CreateCylinder("roof", {diameter: 1.8, height: 1.2, tessellation: 3});
+    roof.material = roofMat;
+    roof.scaling.x = 0.75;
+    roof.rotation.z = Math.PI / 2;
+    roof.position.y = 1.6;
+    roof.position.x = -3;
+
+    // Combine stall and roof to create a pavilion
+    const pavilion = BABYLON.Mesh.MergeMeshes([product, roof], true, false, null, false, true);
+
+    const pav1 = pavilion.createInstance("pav1");
+    pav1.z = 0;
+    const pav2 = pavilion.createInstance("pav2");
+    pav2.position.z = 2.8;
+    //pav2.position.
+    const pav3 = pavilion.createInstance("pav3");
+    pav3.position.x = 5;
+    const pav4 = pavilion.createInstance("pav4");
+    pav4.position.x = 5.8;
+    pav4.position.z = 3;
+
+    BABYLON.SceneLoader.ImportMeshAsync("him", "/scenes/Dude/", "Dude.babylon", scene).then((result) => {
+        var dude = result.meshes[0];
+        dude.scaling = new BABYLON.Vector3(0.02, 0.02, 0.02);
+        dude.position = new BABYLON.Vector3(-1, 1, 1);
+    });
+
+    /*BABYLON.SceneLoader.ImportMesh("", Assets.meshes.Yeti.rootUrl, Assets.meshes.Yeti.filename, scene, function(newMeshes){
     newMeshes[0].scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
     });
+    */
+
     return scene;
-};
+}
                 window.initFunction = async function() {
-
-
+                    
+                    
                     var asyncEngineCreation = async function() {
                         try {
                         return createDefaultEngine();
@@ -109,7 +151,7 @@
         if (!engine) throw 'engine should not be null.';
         startRenderLoop(engine, canvas);
         window.scene = createScene();};
-        initFunction().then(() => {sceneToRender = scene
+        initFunction().then(() => {sceneToRender = scene                    
         });
 
         // Resize
