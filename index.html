@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <title>An Immersive Experience using Babylon.js</title>
+        <title>Babylon.js sample code</title>
 
         <!-- Babylon.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
@@ -65,7 +65,7 @@
     //camera.setTarget(BABYLON.Vector3.Zero());
 
     var camera = new BABYLON.ArcRotateCamera("camera", BABYLON.Tools.ToRadians(90), BABYLON.Tools.ToRadians(65), 10, BABYLON.Vector3.Zero(), scene);
-
+    
     // This attaches the camera to the canvas
     camera.attachControl(canvas, true);
 
@@ -122,25 +122,24 @@
     pav4.position.x = 5.8;
     pav4.position.z = 3;
 
-    /*
     BABYLON.SceneLoader.ImportMeshAsync("him", "/scenes/Dude/", "Dude.babylon", scene).then((result) => {
         var dude = result.meshes[0];
         dude.scaling = new BABYLON.Vector3(0.02, 0.02, 0.02);
         dude.position = new BABYLON.Vector3(-1, 1, 1);
     });
-    */
+
+    await scene.createDefaultXRExperienceAsync();
+
     /*BABYLON.SceneLoader.ImportMesh("", Assets.meshes.Yeti.rootUrl, Assets.meshes.Yeti.filename, scene, function(newMeshes){
     newMeshes[0].scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
     });
     */
 
-    await scene.createDefaultXRExperienceAsync();
-
     return scene;
 }
                 window.initFunction = async function() {
-
-
+                    
+                    
                     var asyncEngineCreation = async function() {
                         try {
                         return createDefaultEngine();
@@ -154,7 +153,8 @@
         if (!engine) throw 'engine should not be null.';
         startRenderLoop(engine, canvas);
         window.scene = createScene();};
-        initFunction().then(() => {sceneToRender = scene
+        initFunction().then(() => {scene.then(returnedScene => { sceneToRender = returnedScene; });
+                            
         });
 
         // Resize
