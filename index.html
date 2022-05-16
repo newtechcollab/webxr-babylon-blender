@@ -122,7 +122,7 @@
     pav4.position.x = 5.8;
     pav4.position.z = 3;
 
-    BABYLON.SceneLoader.ImportMeshAsync("him", "", "Dude.babylon", scene).then((result) => {
+    BABYLON.SceneLoader.ImportMeshAsync("", Assets.meshes.dude.rootUrl, Assets.meshes.dude.filename, scene).then((result) => {
         var dude = result.meshes[0];
         dude.scaling = new BABYLON.Vector3(0.02, 0.02, 0.02);
         dude.position = new BABYLON.Vector3(-1, 1, 1);
