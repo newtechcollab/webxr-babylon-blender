@@ -89,6 +89,7 @@
     //var groundTexture = new BABYLON.Texture(Assets.textures.checkerboard_basecolor_png.rootUrl, scene);
     //groundMaterial.diffuseTexture = groundTexture;
 
+    /*
     // Create the stall box
     var product = BABYLON.MeshBuilder.CreateBox("stall");
     product.position = new BABYLON.Vector3(-3,0.5,0);
@@ -129,12 +130,21 @@
     });
 
     await scene.createDefaultXRExperienceAsync();
-
+    */
+            
     /*BABYLON.SceneLoader.ImportMesh("", Assets.meshes.Yeti.rootUrl, Assets.meshes.Yeti.filename, scene, function(newMeshes){
     newMeshes[0].scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
     });
     */
 
+    // Append glTF model to scene.
+    BABYLON.SceneLoader.Append("", "house3d.glb", scene, function (scene) {
+        // Create a default arc rotate camera and light.
+        scene.createDefaultCameraOrLight(true, true, true);
+
+        // The default camera looks at the back of the asset.
+        // Rotate the camera by 180 degrees to the front of the asset.
+    });
     return scene;
 }
                 window.initFunction = async function() {
