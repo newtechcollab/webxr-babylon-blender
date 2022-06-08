@@ -138,9 +138,6 @@
     newMeshes[0].scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
     });
     */
-
-    // Support WebXR
-    await scene.createDefaultXRExperienceAsync();
             
     // Append glTF model to scene.
     BABYLON.SceneLoader.Append("", "acme-retail.glb", scene, function (scene) {
@@ -150,6 +147,10 @@
         // The default camera looks at the back of the asset.
         // Rotate the camera by 180 degrees to the front of the asset.
     });
+            
+    // Support WebXR
+    await scene.createDefaultXRExperienceAsync();
+            
     return scene;
 }
                 window.initFunction = async function() {
