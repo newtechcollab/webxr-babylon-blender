@@ -139,6 +139,9 @@
     });
     */
 
+    // Support WebXR
+    await scene.createDefaultXRExperienceAsync();
+            
     // Append glTF model to scene.
     BABYLON.SceneLoader.Append("", "acme-retail.glb", scene, function (scene) {
         // Create a default arc rotate camera and light.
